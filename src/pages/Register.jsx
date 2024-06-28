@@ -96,7 +96,7 @@ function Register() {
         />
         <FormInput
           type="url"
-          name="PhotoUrl"
+          name="photoUrl"
           labelText="PhotoUrl"
           error={errorStatus.photoURL}
         />
