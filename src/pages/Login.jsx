@@ -87,7 +87,7 @@ function Login() {
         <div className="text-center">
           Don't have an account?{" "}
           <Link className="link link-primary" to="/register">
-            Register
+            Submit
           </Link>
         </div>
       </Form>

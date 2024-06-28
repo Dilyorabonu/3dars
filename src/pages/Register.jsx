@@ -128,7 +128,7 @@ function Register() {
         <div className="text-center">
           Alredy registered?{" "}
           <Link className="link link-primary" to="/login">
-            Login
+            Submit
           </Link>
         </div>
       </Form>
