@@ -116,7 +116,7 @@ function Register() {
 
         <div className="w-full">
           {!isPending && (
-            <button className="btn btn-primary btn-block">Login</button>
+            <button className="btn btn-primary btn-block">Submit</button>
           )}
           {isPending && (
             <button disabled className="btn btn-primary btn-block">
@@ -128,7 +128,7 @@ function Register() {
         <div className="text-center">
           Alredy registered?{" "}
           <Link className="link link-primary" to="/login">
-            Submit
+            Login
           </Link>
         </div>
       </Form>

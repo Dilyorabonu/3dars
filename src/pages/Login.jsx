@@ -76,7 +76,7 @@ function Login() {
 
         <div className="w-full">
           {!isPending && (
-            <button className="btn btn-primary btn-block">Login</button>
+            <button className="btn btn-primary btn-block">Submit</button>
           )}
           {isPending && (
             <button disabled className="btn btn-primary btn-block">
@@ -87,7 +87,7 @@ function Login() {
         <div className="text-center">
           Don't have an account?{" "}
           <Link className="link link-primary" to="/register">
-            Submit
+            Register
           </Link>
         </div>
       </Form>
