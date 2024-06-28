@@ -1,19 +1,41 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 
-//pages
 import { Home, Login, Register } from "./pages";
 
-//layout
+// layout
 import MainLayout from "./layouts/MainLayout";
 
-import { loader as LoginLoader } from "./pages/Login";
-import { loader as RegisterLoader } from "./pages/Register";
+// loaders
+import { action as LoginAction } from "./pages/Login";
+import { action as RegisterAction } from "./pages/Register";
+
+import { ProtectedRoutes } from "./components";
+
+//redux
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+
+//firebase
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase/firebaseConfig";
+import { isAuthChange, login } from "./app/userSlice";
 
 function App() {
+  const { user, isAuthReady } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
   const routes = createBrowserRouter([
     {
       path: "/",
-      element: <MainLayout />,
+      element: (
+        <ProtectedRoutes user={user}>
+          <MainLayout />
+        </ProtectedRoutes>
+      ),
       children: [
         {
           index: true,
@@ -22,17 +44,24 @@ function App() {
       ],
     },
     {
-      path: "/login",
-      element: <Login />,
-      loader: LoginLoader,
+      path: "login",
+      element: user ? <Navigate to="/" /> : <Login />,
+      action: LoginAction,
     },
     {
-      path: "/register",
-      element: <Register />,
-      loader: RegisterLoader,
+      path: "register",
+      element: user ? <Navigate to="/" /> : <Register />,
+      action: RegisterAction,
     },
   ]);
-  return <RouterProvider router={routes} />;
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      dispatch(login(user));
+      dispatch(isAuthChange());
+    });
+  }, []);
+  return <>{isAuthReady && <RouterProvider router={routes} />}</>;
 }
 
 export default App;

@@ -4,7 +4,7 @@ import { useRegister } from "../hooks/useRegister";
 import { useEffect } from "react";
 import { FormInput } from "../components";
 
-export const loader = async ({ request }) => {
+export const action = async ({ request }) => {
   let formData = await request.formData();
   let email = formData.get("email");
   let password = formData.get("password");

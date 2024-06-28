@@ -6,7 +6,7 @@ import { FormInput } from "../components";
 import { useLogin } from "../hooks/useLogin";
 import { useEffect } from "react";
 
-export const loader = async ({ request }) => {
+export const action = async ({ request }) => {
   let formData = await request.formData();
   let email = formData.get("email");
   let password = formData.get("password");
