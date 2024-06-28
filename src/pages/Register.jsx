@@ -29,6 +29,7 @@ function Register() {
 
   useEffect(() => {
     if (userData) {
+
       if (
         userData.displayName &&
         userData.email &&
@@ -96,7 +97,7 @@ function Register() {
         />
         <FormInput
           type="url"
-          name="photoUrl"
+          name="photoURL"
           labelText="PhotoUrl"
           error={errorStatus.photoURL}
         />
