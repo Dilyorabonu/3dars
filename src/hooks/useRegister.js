@@ -13,7 +13,6 @@ const useRegister = () => {
   const dispatch = useDispatch();
 
   const registerWithEmail = async (email, password, displayName, photoURL) => {
-    console.log(email)
     setIsPending(true);
     try {
       const userCredential = await createUserWithEmailAndPassword(

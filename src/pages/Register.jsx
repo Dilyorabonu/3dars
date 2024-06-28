@@ -29,14 +29,18 @@ function Register() {
 
   useEffect(() => {
     if (userData) {
-
       if (
         userData.displayName &&
         userData.email &&
         userData.password &&
         userData.photoURL
       ) {
-        registerWithEmail(userData);
+        registerWithEmail(
+          userData.email,
+          userData.password,
+          userData.displayName,
+          userData.photoURL
+        );
       } else {
         toast.error("Please, enter all of them!");
       }
@@ -126,7 +130,7 @@ function Register() {
         </div>
 
         <div className="text-center">
-          Alredy registered?{" "}
+          Already registered?{" "}
           <Link className="link link-primary" to="/login">
             Login
           </Link>

@@ -60,7 +60,7 @@ function Navbar() {
       </div>
       <div className="navbar-center">
         <Link to="/" className="btn btn-ghost text-xl">
-          daisyUI
+          Website
         </Link>
       </div>
       <div className="navbar-end">
@@ -110,20 +110,20 @@ function Navbar() {
             />
 
             {/* sun icon */}
-            <IoMdSunny className="swap-on fill-current w-7 h-7" />
+            <IoMdSunny className="swap-on fill-current w-6 h-6" />
 
             {/* moon icon */}
             <IoMdMoon className="swap-off fill-current w-7 h-7" />
           </label>
         </button>
         <div className="flex items-center gap-4">
-          <p className="">{user.displayName}</p>
+          {/* <p className="">{user.displayName}</p> */}
           <div className="avatar">
-            <div className="w-12 rounded-full ring ring-secondary ring-offset-base-100 ring-offset-2">
-              <img src={user.photoURL} />
+            <div className="w-12 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+              {/* <img src={user.photoURL} /> */}
             </div>
           </div>
-          <button onClick={logout} className="btn btn-secondary">
+          <button onClick={logout} className="btn btn-primary">
             Log out
           </button>
         </div>

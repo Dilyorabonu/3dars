@@ -4,7 +4,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-import { Home, Login, Register } from "./pages";
+import { Home, Login, Register, About, Contact } from "./pages";
 
 // layout
 import MainLayout from "./layouts/MainLayout";
@@ -27,7 +27,7 @@ import { isAuthChange, login } from "./app/userSlice";
 function App() {
   const { user, isAuthReady } = useSelector((state) => state.user);
 
-  console.log(user)
+  console.log(user);
   const dispatch = useDispatch();
   const routes = createBrowserRouter([
     {
