@@ -4,7 +4,9 @@ import { Form, Link, useActionData } from "react-router-dom";
 import { FormInput } from "../components";
 
 import { useLogin } from "../hooks/useLogin";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
+import toast from "react-hot-toast";
 
 export const action = async ({ request }) => {
   let formData = await request.formData();
@@ -14,13 +16,57 @@ export const action = async ({ request }) => {
   return { email, password };
 };
 
+function themeFromLocalStorage() {
+  return localStorage.getItem("theme") || "winter";
+}
+
 function Login() {
+  const [theme, setTheme] = useState(themeFromLocalStorage());
+  const handleTheme = () => {
+    const newTheme = theme == "winter" ? "dracula" : "winter";
+    setTheme(newTheme);
+  };
+
+  const [errorStatus, setErrorStatus] = useState({
+    email: "",
+    password: "",
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
   const userData = useActionData();
   const { signInWithEmail, isPending } = useLogin();
 
   useEffect(() => {
     if (userData) {
-      signInWithEmail(userData);
+      if (userData.email && userData.password) {
+        signInWithEmail(userData);
+      } else {
+        toast.error("Please, enter all of them!");
+      }
+
+      if (userData.email == "") {
+        setErrorStatus((prev) => {
+          return { ...prev, email: "input-error" };
+        });
+      } else {
+        setErrorStatus((prev) => {
+          return { ...prev, email: "" };
+        });
+      }
+
+      if (userData.password == "") {
+        setErrorStatus((prev) => {
+          return { ...prev, password: "input-error" };
+        });
+      } else {
+        setErrorStatus((prev) => {
+          return { ...prev, password: "" };
+        });
+      }
     }
   }, [userData]);
   return (
@@ -30,8 +76,18 @@ function Login() {
         className="flex flex-col items-center gap-4 card bg-base-100 w-96 shadow-xl p-5"
       >
         <h1 className="text-4xl font-semibold">Login</h1>
-        <FormInput type="email" name="email" labelText="email" />
-        <FormInput type="password" name="password" labelText="password" />
+        <FormInput
+          type="email"
+          name="email"
+          labelText="email"
+          error={errorStatus.email}
+        />
+        <FormInput
+          type="password"
+          name="password"
+          labelText="password"
+          error={errorStatus.password}
+        />
 
         <div className="w-full">
           {!isPending && (
@@ -44,7 +100,7 @@ function Login() {
           )}
         </div>
         <div className="text-center">
-          Do you not have accout yet?{" "}
+          Don't have an account?
           <Link className="link link-primary" to="/register">
             Register
           </Link>

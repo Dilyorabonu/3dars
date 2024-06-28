@@ -1,8 +1,10 @@
 import { Form, Link, useActionData } from "react-router-dom";
 
 import { useRegister } from "../hooks/useRegister";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FormInput } from "../components";
+
+import toast from "react-hot-toast";
 
 export const action = async ({ request }) => {
   let formData = await request.formData();
@@ -14,18 +16,83 @@ export const action = async ({ request }) => {
   return { email, password, displayName, photoURL };
 };
 
+function themeFromLocalStorage() {
+  return localStorage.getItem("theme") || "winter";
+}
+
 function Register() {
+  const [theme, setTheme] = useState(themeFromLocalStorage());
+  const handleTheme = () => {
+    const newTheme = theme == "winter" ? "dracula" : "winter";
+    setTheme(newTheme);
+  };
+  const [errorStatus, setErrorStatus] = useState({
+    name: "",
+    photoURL: "",
+    email: "",
+    password: "",
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
   const userData = useActionData();
   const { registerWithEmail, isPending } = useRegister();
 
   useEffect(() => {
     if (userData) {
-      registerWithEmail(
-        userData.email,
-        userData.password,
-        userData.displayName,
+      if (
+        userData.displayName &&
+        userData.email &&
+        userData.password &&
         userData.photoURL
-      );
+      ) {
+        registerWithEmail(userData);
+      } else {
+        toast.error("Please, enter all of them!");
+      }
+
+      if (userData.displayName == "") {
+        setErrorStatus((prev) => {
+          return { ...prev, name: "input-error" };
+        });
+      } else {
+        setErrorStatus((prev) => {
+          return { ...prev, name: "" };
+        });
+      }
+
+      if (userData.password == "") {
+        setErrorStatus((prev) => {
+          return { ...prev, password: "input-error" };
+        });
+      } else {
+        setErrorStatus((prev) => {
+          return { ...prev, password: "" };
+        });
+      }
+
+      if (userData.photoURL == "") {
+        setErrorStatus((prev) => {
+          return { ...prev, photoURL: "input-error" };
+        });
+      } else {
+        setErrorStatus((prev) => {
+          return { ...prev, photoURL: "" };
+        });
+      }
+
+      if (userData.email == "") {
+        setErrorStatus((prev) => {
+          return { ...prev, email: "input-error" };
+        });
+      } else {
+        setErrorStatus((prev) => {
+          return { ...prev, email: "" };
+        });
+      }
     }
   }, [userData]);
   return (
@@ -35,10 +102,30 @@ function Register() {
         className="flex flex-col items-center gap-4 card bg-base-100 w-96 shadow-xl p-5"
       >
         <h1 className="text-4xl font-semibold">Register</h1>
-        <FormInput type="text" name="displayName" labelText="displayName" />
-        <FormInput type="url" name="PhotoUrl" labelText="PhotoUrl" />
-        <FormInput type="email" name="email" labelText="email" />
-        <FormInput type="password" name="password" labelText="password" />
+        <FormInput
+          type="text"
+          name="displayName"
+          labelText="displayName"
+          error={errorStatus.name}
+        />
+        <FormInput
+          type="url"
+          name="PhotoUrl"
+          labelText="PhotoUrl"
+          error={errorStatus.photoURL}
+        />
+        <FormInput
+          type="email"
+          name="email"
+          labelText="email"
+          error={errorStatus.email}
+        />
+        <FormInput
+          type="password"
+          name="password"
+          labelText="password"
+          error={errorStatus.password}
+        />
 
         <div className="w-full">
           {!isPending && (

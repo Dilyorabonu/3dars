@@ -21,11 +21,11 @@ const useLogin = () => {
       );
       const user = userCredential.user;
       dispatch(login(user));
-      toast.success("Welcome back!");
+      toast.success(`Welcome back ${user.displayName}!`);
       setIsPending(false);
     } catch (error) {
       const errorMessage = error.message;
-      toast.error(errorMessage);
+      toast.error("Password or Email is incorrect!");
       setIsPending(false);
     }
   };
