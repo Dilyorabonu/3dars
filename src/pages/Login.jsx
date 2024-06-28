@@ -16,26 +16,11 @@ export const action = async ({ request }) => {
   return { email, password };
 };
 
-function themeFromLocalStorage() {
-  return localStorage.getItem("theme") || "winter";
-}
-
 function Login() {
-  const [theme, setTheme] = useState(themeFromLocalStorage());
-  const handleTheme = () => {
-    const newTheme = theme == "winter" ? "dracula" : "winter";
-    setTheme(newTheme);
-  };
-
   const [errorStatus, setErrorStatus] = useState({
     email: "",
     password: "",
   });
-
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("theme", theme);
-  }, [theme]);
 
   const userData = useActionData();
   const { signInWithEmail, isPending } = useLogin();
@@ -100,7 +85,7 @@ function Login() {
           )}
         </div>
         <div className="text-center">
-          Don't have an account?
+          Don't have an account?{" "}
           <Link className="link link-primary" to="/register">
             Register
           </Link>

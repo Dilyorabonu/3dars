@@ -16,27 +16,13 @@ export const action = async ({ request }) => {
   return { email, password, displayName, photoURL };
 };
 
-function themeFromLocalStorage() {
-  return localStorage.getItem("theme") || "winter";
-}
-
 function Register() {
-  const [theme, setTheme] = useState(themeFromLocalStorage());
-  const handleTheme = () => {
-    const newTheme = theme == "winter" ? "dracula" : "winter";
-    setTheme(newTheme);
-  };
   const [errorStatus, setErrorStatus] = useState({
     name: "",
     photoURL: "",
     email: "",
     password: "",
   });
-
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("theme", theme);
-  }, [theme]);
 
   const userData = useActionData();
   const { registerWithEmail, isPending } = useRegister();
@@ -139,7 +125,7 @@ function Register() {
         </div>
 
         <div className="text-center">
-          Alredy registered ?{" "}
+          Alredy registered?{" "}
           <Link className="link link-primary" to="/login">
             Login
           </Link>
