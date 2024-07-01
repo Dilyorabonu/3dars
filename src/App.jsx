@@ -26,8 +26,6 @@ import { isAuthChange, login } from "./app/userSlice";
 
 function App() {
   const { user, isAuthReady } = useSelector((state) => state.user);
-
-  console.log(user);
   const dispatch = useDispatch();
   const routes = createBrowserRouter([
     {

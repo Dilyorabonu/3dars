@@ -1,26 +1,42 @@
 //icons
-import { IoMdSunny, IoMdMoon, IoMdSearch, IoMdNotifications } from "react-icons/io";
+import {
+  IoMdSunny,
+  IoMdMoon,
+  IoMdSearch,
+  IoMdNotifications,
+} from "react-icons/io";
 
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import { NavLinks } from "../components";
 
+//firebase
 import { signOut } from "firebase/auth";
-
 import { auth } from "../firebase/firebaseConfig";
+
 import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../app/userSlice";
 
 function themeLocalStorage() {
   return localStorage.getItem("theme") || "winter";
 }
 
 function Navbar() {
-  const logout = () => {
-    signOut(auth)
-      .then(() => {})
-      .catch((error) => {});
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
+  const logout = async () => {
+    try {
+      await signOut(auth);
+      toast.success("See you soon!");
+      dispatch(logout());
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
   const [theme, setTheme] = useState(themeLocalStorage);
+
   const handleTheme = () => {
     const newTheme = theme == "winter" ? "dracula" : "winter";
     setTheme(newTheme);
@@ -92,10 +108,17 @@ function Navbar() {
           </label>
         </button>
         <div className="flex items-center gap-4">
-          {/* <p className="">{user.displayName}</p> */}
+          <p className="">{user.displayName}</p>
           <div className="avatar">
             <div className="w-12 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-              {/* <img src={user.photoURL} /> */}
+              <img
+                src={
+                  user.photoURL
+                    ? user.photoURL
+                    : `https://api.dicebar.com/9.x/initials/svg?seed=${user.displayName}`
+                }
+                alt=""
+              />
             </div>
           </div>
           <button onClick={logout} className="btn btn-primary">

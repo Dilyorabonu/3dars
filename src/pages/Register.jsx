@@ -97,25 +97,27 @@ function Register() {
           type="text"
           name="displayName"
           labelText="displayName"
-          error={errorStatus.name}
+          status={errorStatus.name}
         />
         <FormInput
           type="url"
           name="photoURL"
           labelText="PhotoUrl"
-          error={errorStatus.photoURL}
+          status={errorStatus.photoURL}
         />
         <FormInput
           type="email"
           name="email"
           labelText="email"
-          error={errorStatus.email}
+          status={errorStatus.email}
+          plecholder="example@gmail.com"
         />
         <FormInput
           type="password"
           name="password"
           labelText="password"
-          error={errorStatus.password}
+          status={errorStatus.password}
+          plecholder="••••••••"
         />
 
         <div className="w-full">
