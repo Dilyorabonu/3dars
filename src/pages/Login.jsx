@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 
 import toast from "react-hot-toast";
 
+import { useGoogle } from "../hooks/useGoogle";
+
 export const action = async ({ request }) => {
   let formData = await request.formData();
   let email = formData.get("email");
@@ -54,49 +56,68 @@ function Login() {
       }
     }
   }, [userData]);
-  return (
-    <div className="grid">
-      <div></div>
-      <div className="grid place-items-center min-h-screen">
-        <Form
-          method="post"
-          className="flex flex-col items-center gap-4 card bg-base-100 w-96 shadow-xl p-5"
-        >
-          <h1 className="text-4xl font-semibold">Login</h1>
-          <FormInput
-            type="email"
-            name="email"
-            labelText="email"
-            status={errorStatus.email}
-            plecholder="example@gmail.com"
-          />
-          <FormInput
-            type="password"
-            name="password"
-            labelText="password"
-            status={errorStatus.password}
-            plecholder="••••••••"
-          />
 
-          <div className="w-full">
-            {!isPending && (
-              <button className="btn btn-primary btn-block">Submit</button>
-            )}
-            {isPending && (
-              <button disabled className="btn btn-primary btn-block">
-                Loading...
+  let { handleGoogle } = useGoogle();
+  return (
+    <>
+      <video
+        autoPlay
+        loop
+        muted
+        className=" bg-cover h-screen absolute -z-10 opacity-70 object-cover w-full "
+        src="/bg-registor.mp4"
+      ></video>
+      <div className="grid">
+        <div className="grid place-items-center min-h-screen">
+          <Form
+            method="post"
+            className="flex flex-col items-center gap-4 card bg-base-100 w-96 shadow-xl p-5"
+          >
+            <h1 className="text-4xl font-semibold">Login</h1>
+            <FormInput
+              type="email"
+              name="email"
+              labelText="email"
+              status={errorStatus.email}
+              plecholder="example@gmail.com"
+            />
+            <FormInput
+              type="password"
+              name="password"
+              labelText="password"
+              status={errorStatus.password}
+              plecholder="••••••••"
+            />
+
+            <div className="w-full">
+              {!isPending && (
+                <button className="btn btn-primary btn-block">Submit</button>
+              )}
+              {isPending && (
+                <button disabled className="btn btn-primary btn-block">
+                  Loading...
+                </button>
+              )}
+              <button
+                onClick={() => {
+                  handleGoogle();
+                }}
+                className="btn btn-primary btn-block mt-2"
+              >
+                {" "}
+                Google
               </button>
-            )}
-          </div>
-          <div className="text-center">
-            Don't have an account?{" "}
-            <Link className="link link-primary" to="/register">
-              Register
-            </Link>
-          </div>
-        </Form>
+            </div>
+            <div className="text-center">
+              Don't have an account?{" "}
+              <Link className="link link-primary" to="/register">
+                Register
+              </Link>
+            </div>
+          </Form>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

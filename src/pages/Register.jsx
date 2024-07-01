@@ -6,6 +6,8 @@ import { FormInput } from "../components";
 
 import toast from "react-hot-toast";
 
+import { useGoogle } from "../hooks/useGoogle";
+
 export const action = async ({ request }) => {
   let formData = await request.formData();
   let email = formData.get("email");
@@ -86,59 +88,78 @@ function Register() {
       }
     }
   }, [userData]);
+  let { handleGoogle } = useGoogle();
   return (
-    <div className="grid place-items-center min-h-screen">
-      <Form
-        method="post"
-        className="flex flex-col items-center gap-4 card bg-base-100 w-96 shadow-xl p-5"
-      >
-        <h1 className="text-4xl font-semibold">Register</h1>
-        <FormInput
-          type="text"
-          name="displayName"
-          labelText="displayName"
-          status={errorStatus.name}
-        />
-        <FormInput
-          type="url"
-          name="photoURL"
-          labelText="PhotoUrl"
-          status={errorStatus.photoURL}
-        />
-        <FormInput
-          type="email"
-          name="email"
-          labelText="email"
-          status={errorStatus.email}
-          plecholder="example@gmail.com"
-        />
-        <FormInput
-          type="password"
-          name="password"
-          labelText="password"
-          status={errorStatus.password}
-          plecholder="••••••••"
-        />
+    <>
+      <video
+        loop
+        autoPlay
+        muted
+        className=" bg-cover h-screen absolute -z-10 opacity-70 object-cover w-full "
+        src="/bg-login.mp4"
+      ></video>
+      <div className="grid place-items-center min-h-screen">
+        <Form
+          method="post"
+          className="flex flex-col items-center gap-4 card bg-base-100 w-96 shadow-xl p-5"
+        >
+          <h1 className="text-4xl font-semibold">Register</h1>
+          <FormInput
+            type="text"
+            name="displayName"
+            labelText="displayName"
+            status={errorStatus.name}
+          />
+          <FormInput
+            type="url"
+            name="photoURL"
+            labelText="PhotoUrl"
+            status={errorStatus.photoURL}
+          />
+          <FormInput
+            type="email"
+            name="email"
+            labelText="email"
+            status={errorStatus.email}
+            plecholder="example@gmail.com"
+          />
+          <FormInput
+            type="password"
+            name="password"
+            labelText="password"
+            status={errorStatus.password}
+            plecholder="••••••••"
+          />
 
-        <div className="w-full">
-          {!isPending && (
-            <button className="btn btn-primary btn-block">Submit</button>
-          )}
-          {isPending && (
-            <button disabled className="btn btn-primary btn-block">
-              Loading...
+          <div className="w-full">
+            {!isPending && (
+              <button className="btn btn-primary btn-block">Submit</button>
+            )}
+            {isPending && (
+              <button disabled className="btn btn-primary btn-block">
+                Loading...
+              </button>
+            )}
+            <button
+              onClick={() => {
+                handleGoogle();
+              }}
+              className="btn btn-primary btn-block mt-2"
+            >
+              {" "}
+              Google
             </button>
-          )}
-        </div>
+          </div>
 
-        <div className="text-center">
-          Already registered?{" "}
-          <Link className="link link-primary" to="/login">
-            Login
-          </Link>
-        </div>
-      </Form>
-    </div>
+          <div className="text-center">
+            Already registered?{" "}
+            <Link className="link link-primary" to="/login">
+              Login
+            </Link>
+          </div>
+        </Form>
+      </div>
+    </>
   );
 }
 
