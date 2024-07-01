@@ -8,6 +8,10 @@ import toast from "react-hot-toast";
 
 import { useGoogle } from "../hooks/useGoogle";
 
+function themeFromLocalStorage() {
+  return localStorage.getItem("theme") || "winter";
+}
+
 export const action = async ({ request }) => {
   let formData = await request.formData();
   let email = formData.get("email");
@@ -19,12 +23,23 @@ export const action = async ({ request }) => {
 };
 
 function Register() {
+  const [theme, setTheme] = useState(themeFromLocalStorage());
+  const handleTheme = () => {
+    const newTheme = theme == "winter" ? "dracula" : "winter";
+    setTheme(newTheme);
+  };
+
   const [errorStatus, setErrorStatus] = useState({
     name: "",
     photoURL: "",
     email: "",
     password: "",
   });
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   const userData = useActionData();
   const { registerWithEmail, isPending } = useRegister();

@@ -26,7 +26,7 @@ const useRegister = () => {
       });
       const user = userCredential.user;
       dispatch(login(user));
-      toast.success(`Welcome ${user.displayName}!`);
+      toast.success(`Welcome, ${user.displayName}!`);
       setIsPending(false);
     } catch (error) {
       const errorMessage = error.message;

@@ -14,6 +14,7 @@ export let useGoogle = () => {
         const token = credential.accessToken;
         const user = result.user;
         dispetch(login(user));
+        toast.success(`Welcome, ${user.displayName}!`);
       })
       .catch((error) => {
         const errorCode = error.code;

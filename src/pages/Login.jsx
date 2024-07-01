@@ -10,6 +10,10 @@ import toast from "react-hot-toast";
 
 import { useGoogle } from "../hooks/useGoogle";
 
+function themeFromLocalStorage() {
+  return localStorage.getItem("theme") || "winter";
+}
+
 export const action = async ({ request }) => {
   let formData = await request.formData();
   let email = formData.get("email");
@@ -26,6 +30,17 @@ function Login() {
 
   const userData = useActionData();
   const { signInWithEmail, isPending } = useLogin();
+
+  const [theme, setTheme] = useState(themeFromLocalStorage());
+  const handleTheme = () => {
+    const newTheme = theme == "winter" ? "dracula" : "winter";
+    setTheme(newTheme);
+  };
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   useEffect(() => {
     if (userData) {

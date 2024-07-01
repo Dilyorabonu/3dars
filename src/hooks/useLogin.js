@@ -21,7 +21,7 @@ const useLogin = () => {
       );
       const user = userCredential.user;
       dispatch(login(user));
-      toast.success(`Welcome back ${user.displayName}!`);
+      toast.success(`Welcome back, ${user.displayName}!`);
       setIsPending(false);
     } catch (error) {
       const errorMessage = error.message;

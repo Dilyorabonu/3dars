@@ -26,10 +26,10 @@ function themeLocalStorage() {
 function Navbar() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
-  const logout = async () => {
+  const logOut = async () => {
     try {
       await signOut(auth);
-      toast.success("See you soon!");
+      toast.success(`See you soon, ${user.displayName}`);
       dispatch(logout());
     } catch (error) {
       toast.error(error.message);
@@ -121,7 +121,7 @@ function Navbar() {
               />
             </div>
           </div>
-          <button onClick={logout} className="btn btn-primary">
+          <button onClick={logOut} className="btn btn-primary">
             Log out
           </button>
         </div>
