@@ -1,42 +1,78 @@
-import React from "react";
 import { useSelector } from "react-redux";
 import { useCollection } from "../hooks/useCollection";
+import { FormInput, FormCheckbox } from "../components";
+import { Form, useActionData } from "react-router-dom";
+import { useEffect } from "react";
+
+import { collection, addDoc, doc, deleteDoc } from "firebase/firestore";
+import { db } from "../firebase/firebaseConfig";
+import toast from "react-hot-toast";
+
+export const action = async ({ request }) => {
+  let formData = await request.formData();
+  let title = formData.get("title");
+  let completed = formData.get("completed");
+
+  return { title, completed };
+};
 
 function Home() {
-  let { user } = useSelector((state) => state.user);
-  let { data } = useCollection("todos", ["uid", "==", user.uid]);
-  return (
-    <div className=" aligen-conten">
-      <h1 className=" text-5xl font-bold my-5">Todos</h1>
-      <div className="grid grid-cols-3 gap-20">
-        {data &&
-          data.map((todo, id) => {
-            return (
-              <div
-                key={id}
-                className={`card bg-base-100 w-96 shadow-xl bg-[url('https://thumbs.dreamstime.com/z/to-do-list-white-paper-pencils-background-template-56711188.jpg')] bg-bottom ${
-                  todo.complet && "opacity-50"
-                }`}
-              >
-                <div className="card-body">
-                  <h2 className="card-title py-2">{todo.title}</h2>
+  const { user } = useSelector((state) => state.user);
+  const { data: todos } = useCollection("todos", ["uid", "==", user.uid]);
+  const userData = useActionData();
 
-                  <div className="card-actions justify-end">
-                    {todo.complet ? (
-                      <button disabled className="btn ">
-                        Bajarilgan
-                      </button>
-                    ) : (
-                      <button className="btn ">Bagarish kerak</button>
-                    )}
-                  </div>
+  useEffect(() => {
+    if (userData) {
+      const newDoc = {
+        ...userData,
+        uid: user.uid,
+      };
+      addDoc(collection(db, "todos"), newDoc).then(() => {
+        toast.success("Successfully Added");
+      });
+    }
+  }, [userData]);
+
+  const deleteDocument = (id) => {
+    deleteDoc(doc(db, "todos", id)).then(() => {
+      toast.success("Deleted");
+    });
+  };
+  return (
+    <div className="site-container">
+      <div className="grid grid-cols-2">
+        <div className="pt-10">
+          <Form
+            method="post"
+            className="flex flex-col items-center gap-4 card bg-base-100 w-96 shadow-xl p-5"
+          >
+            <h1 className="text-3xl font-semibold">Add new Todo</h1>
+            <FormInput type="text" labelText="title" name="title" />
+            <FormCheckbox name="completed" />
+            <div className="w-full">
+              <button className="btn btn-primary btn-block">Add</button>
+            </div>
+          </Form>
+        </div>
+        <div>
+          {todos &&
+            todos.map((todo) => {
+              return (
+                <div
+                  className="flex gap-4 items-center w-96 justify-between p-5 shadow-xl"
+                  key={todo.id}
+                >
+                  <h3 className="text-3xl">{todo.title}</h3>
+                  <button
+                    onClick={() => deleteDocument(todo.id)}
+                    className="btn btn-primary btn-sm"
+                  >
+                    Delete
+                  </button>
                 </div>
-              </div>
-            );
-          })}
-        {!data && (
-          <span className="loading loading-ring loading-lg size-36 absolute text-center left-[700px]"></span>
-        )}
+              );
+            })}
+        </div>
       </div>
     </div>
   );

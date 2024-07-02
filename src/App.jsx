@@ -9,9 +9,10 @@ import { Home, Login, Register, About, Contact } from "./pages";
 // layout
 import MainLayout from "./layouts/MainLayout";
 
-// loaders
+// actions
 import { action as LoginAction } from "./pages/Login";
 import { action as RegisterAction } from "./pages/Register";
+import { action as HomeAction } from "./pages/Home";
 
 import { ProtectedRoutes } from "./components";
 
@@ -39,6 +40,7 @@ function App() {
         {
           index: true,
           element: <Home />,
+          action: HomeAction,
         },
         // {
         //   path: "/about",
@@ -64,7 +66,9 @@ function App() {
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      dispatch(login(user));
+      if (user?.displayName && user?.photoURL) {
+        dispatch(login(user));
+      }
       dispatch(isAuthChange());
     });
   }, []);

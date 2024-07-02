@@ -26,6 +26,7 @@ function themeLocalStorage() {
 function Navbar() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
+
   const logOut = async () => {
     try {
       await signOut(auth);

@@ -7,4 +7,11 @@ export const store = configureStore({
     user: userReducer,
     todos: todosReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ["user/login", "user/isAuthChange"],
+        ignoredPaths: ["user.user"],
+      },
+    }),
 });

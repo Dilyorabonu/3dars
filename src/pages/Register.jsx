@@ -136,14 +136,12 @@ function Register() {
             name="email"
             labelText="email"
             status={errorStatus.email}
-            plecholder="example@gmail.com"
           />
           <FormInput
             type="password"
             name="password"
             labelText="password"
             status={errorStatus.password}
-            plecholder="••••••••"
           />
 
           <div className="w-full">
@@ -156,6 +154,7 @@ function Register() {
               </button>
             )}
             <button
+              type="button"
               onClick={() => {
                 handleGoogle();
               }}

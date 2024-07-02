@@ -3,6 +3,8 @@ import { auth } from "../firebase/firebaseConfig";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../app/userSlice";
 
+import toast from "react-hot-toast";
+
 export let useGoogle = () => {
   const provider = new GoogleAuthProvider();
   //   let { user } = useSelector((state) => state.user);
