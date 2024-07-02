@@ -1,4 +1,6 @@
 import { Form, Link, useActionData } from "react-router-dom";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { auth } from "../firebase/firebaseConfig";
 
 //components
 import { FormInput } from "../components";
@@ -23,6 +25,7 @@ export const action = async ({ request }) => {
 };
 
 function Login() {
+  const [forgetPassword, setForgetPassword] = useState(true);
   const [errorStatus, setErrorStatus] = useState({
     email: "",
     password: "",
@@ -44,30 +47,31 @@ function Login() {
 
   useEffect(() => {
     if (userData) {
-      if (userData.email && userData.password) {
+      if (userData?.email.trim() && userData.password?.trim()) {
         signInWithEmail(userData.email, userData.password);
-      } else {
-        toast.error("Please, enter all of them!");
       }
 
-      if (userData.email == "") {
+      if (!userData.email.trim()) {
         setErrorStatus((prev) => {
           return { ...prev, email: "input-error" };
         });
-      } else {
-        setErrorStatus((prev) => {
-          return { ...prev, email: "" };
-        });
       }
 
-      if (userData.password == "") {
+      if (!userData.password?.trim()) {
         setErrorStatus((prev) => {
           return { ...prev, password: "input-error" };
         });
-      } else {
-        setErrorStatus((prev) => {
-          return { ...prev, password: "" };
-        });
+      }
+
+      if (!forgetPassword && userData) {
+        sendPasswordResetEmail(auth, userData.email.trim())
+          .then(() => {
+            toast.success("Link send");
+          })
+          .catch((error) => {
+            const errorMessage = error.message;
+            toast.error(errorMessage);
+          });
       }
     }
   }, [userData]);
@@ -96,17 +100,21 @@ function Login() {
               status={errorStatus.email}
               placeholder="example@gmail.com"
             />
-            <FormInput
-              type="password"
-              name="password"
-              labelText="password"
-              status={errorStatus.password}
-              placeholder="*******"
-            />
+            {forgetPassword && (
+              <FormInput
+                type="password"
+                name="password"
+                labelText="password"
+                status={errorStatus.password}
+                placeholder="*******"
+              />
+            )}
 
             <div className="w-full">
               {!isPending && (
-                <button className="btn btn-primary btn-block">Submit</button>
+                <button className="btn btn-primary btn-block">
+                  {forgetPassword ? "Submit" : "Send link"}
+                </button>
               )}
               {isPending && (
                 <button disabled className="btn btn-primary btn-block">
@@ -129,6 +137,29 @@ function Login() {
               <Link className="link link-primary" to="/register">
                 Register
               </Link>
+            </div>
+            <div className="text-end">
+              <Link
+                onClick={() => setForgetPassword(!forgetPassword)}
+                type="btn"
+                className="link link-primary"
+              >
+                Forgot password?
+              </Link>
+              {/* {!isPending && (
+                <Link
+                  onClick={() => setForgetPassword(!forgetPassword)}
+                  type="btn"
+                  className="link link-primary"
+                >
+                  Forgot password?
+                </Link>
+              )}
+              {isPending && (
+                <Link disabled className="link link-primary">
+                  Change password...
+                </Link>
+              )} */}
             </div>
           </Form>
         </div>
