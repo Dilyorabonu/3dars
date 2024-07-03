@@ -9,7 +9,7 @@ function FormCheckbox({ name }) {
           name={name}
           type="checkbox"
           //   defaultChecked
-          className="checkbox checkbox-primary"
+          className="checkbox checkbox-secondary"
         />
       </label>
     </div>

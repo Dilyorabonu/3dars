@@ -88,7 +88,7 @@ function Navbar() {
         <button className="btn btn-ghost btn-circle">
           <div className="indicator">
             <IoMdNotifications className="fill-current w-6 h-6" />
-            <span className="badge badge-xs badge-primary indicator-item"></span>
+            <span className="badge badge-xs badge-secondary indicator-item"></span>
           </div>
         </button>
         <button className="btn btn-ghost btn-circle">
@@ -111,7 +111,7 @@ function Navbar() {
         <div className="flex items-center gap-4">
           <p className="">{user.displayName}</p>
           <div className="avatar">
-            <div className="w-12 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+            <div className="w-12 rounded-full ring ring-secondary ring-offset-base-100 ring-offset-2">
               <img
                 src={
                   user.photoURL
@@ -122,7 +122,7 @@ function Navbar() {
               />
             </div>
           </div>
-          <button onClick={logOut} className="btn btn-primary">
+          <button onClick={logOut} className="btn btn-secondary">
             Log out
           </button>
         </div>

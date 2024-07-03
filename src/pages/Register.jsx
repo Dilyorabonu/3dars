@@ -1,3 +1,6 @@
+//icons
+import { IoLogoGoogle, IoIosLogIn } from "react-icons/io";
+
 import { Form, Link, useActionData } from "react-router-dom";
 
 import { useRegister } from "../hooks/useRegister";
@@ -146,28 +149,36 @@ function Register() {
 
           <div className="w-full">
             {!isPending && (
-              <button className="btn btn-primary btn-block">Submit</button>
+              <button className="btn btn-secondary btn-block">
+                <IoIosLogIn />
+                Submit
+              </button>
             )}
             {isPending && (
-              <button disabled className="btn btn-primary btn-block">
+              <button disabled className="btn btn-secondary btn-block">
+                <IoIosLogIn />
                 Loading...
               </button>
             )}
+            <div class="my-1 border-b text-center">
+              <div class="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
+                Or sign in with e-mail
+              </div>
+            </div>
             <button
               type="button"
               onClick={() => {
                 handleGoogle();
               }}
-              className="btn btn-primary btn-block mt-2"
+              className="btn btn-secondary btn-block mt-2"
             >
-              {" "}
-              Google
+              <IoLogoGoogle /> Sign in
             </button>
           </div>
 
           <div className="text-center">
             Already registered?{" "}
-            <Link className="link link-primary" to="/login">
+            <Link className="link link-secondary" to="/login">
               Login
             </Link>
           </div>

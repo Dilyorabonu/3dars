@@ -50,7 +50,7 @@ function Home() {
             <FormInput type="text" labelText="title" name="title" />
             <FormCheckbox name="completed" />
             <div className="w-full">
-              <button className="btn btn-primary btn-block">Add</button>
+              <button className="btn btn-secondary btn-block">Add</button>
             </div>
           </Form>
         </div>
@@ -65,7 +65,7 @@ function Home() {
                   <h3 className="text-3xl">{todo.title}</h3>
                   <button
                     onClick={() => deleteDocument(todo.id)}
-                    className="btn btn-primary btn-sm"
+                    className="btn btn-secondary btn-sm"
                   >
                     Delete
                   </button>

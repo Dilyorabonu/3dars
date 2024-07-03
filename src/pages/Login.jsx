@@ -1,3 +1,6 @@
+//icons
+import { IoLogoGoogle, IoIosLogIn } from "react-icons/io";
+
 import { Form, Link, useActionData } from "react-router-dom";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
@@ -35,6 +38,7 @@ function Login() {
   const { signInWithEmail, isPending } = useLogin();
 
   const [theme, setTheme] = useState(themeFromLocalStorage());
+
   const handleTheme = () => {
     const newTheme = theme == "winter" ? "dracula" : "winter";
     setTheme(newTheme);
@@ -47,8 +51,13 @@ function Login() {
 
   useEffect(() => {
     if (userData) {
-      if (userData?.email.trim() && userData.password?.trim()) {
+      const state = userData?.email.trim() && userData.password?.trim();
+      if (state) {
         signInWithEmail(userData.email, userData.password);
+      }
+
+      if (setForgetPassword && !state) {
+        toast.error("Please, enter all of them!");
       }
 
       if (!userData.email.trim()) {
@@ -67,6 +76,11 @@ function Login() {
         sendPasswordResetEmail(auth, userData.email.trim())
           .then(() => {
             toast.success("Link send");
+            setForgetPassword(true);
+            setErrorStatus({
+              email: "",
+              password: "",
+            });
           })
           .catch((error) => {
             const errorMessage = error.message;
@@ -111,55 +125,48 @@ function Login() {
             )}
 
             <div className="w-full">
+              <div className="text-end">
+                <Link
+                  onClick={() => setForgetPassword(!forgetPassword)}
+                  type="btn"
+                  className="link link-secondary"
+                >
+                  Forgot password?
+                </Link>
+              </div>
               {!isPending && (
-                <button className="btn btn-primary btn-block">
+                <button className="my-2 btn btn-secondary btn-block">
+                  <IoIosLogIn />
                   {forgetPassword ? "Submit" : "Send link"}
                 </button>
               )}
               {isPending && (
-                <button disabled className="btn btn-primary btn-block">
+                <button disabled className="btn btn-secondary btn-block">
+                  <IoIosLogIn />
                   Loading...
                 </button>
               )}
+              <div class="my-1 border-b text-center">
+                <div class="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
+                  Or sign up with e-mail
+                </div>
+              </div>
               <button
                 type="button"
                 onClick={() => {
                   handleGoogle();
                 }}
-                className="btn btn-primary btn-block mt-2"
+                className="btn btn-secondary btn-block mt-2"
               >
-                {" "}
-                Google
+                <IoLogoGoogle />
+                Sign up
               </button>
             </div>
             <div className="text-center">
               Don't have an account?{" "}
-              <Link className="link link-primary" to="/register">
+              <Link className="link link-secondary" to="/register">
                 Register
               </Link>
-            </div>
-            <div className="text-end">
-              <Link
-                onClick={() => setForgetPassword(!forgetPassword)}
-                type="btn"
-                className="link link-primary"
-              >
-                Forgot password?
-              </Link>
-              {/* {!isPending && (
-                <Link
-                  onClick={() => setForgetPassword(!forgetPassword)}
-                  type="btn"
-                  className="link link-primary"
-                >
-                  Forgot password?
-                </Link>
-              )}
-              {isPending && (
-                <Link disabled className="link link-primary">
-                  Change password...
-                </Link>
-              )} */}
             </div>
           </Form>
         </div>
