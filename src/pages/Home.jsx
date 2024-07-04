@@ -4,9 +4,11 @@ import { FormInput, FormCheckbox } from "../components";
 import { Form, useActionData } from "react-router-dom";
 import { useEffect } from "react";
 
-import { collection, addDoc, doc, deleteDoc } from "firebase/firestore";
+import { doc, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import toast from "react-hot-toast";
+
+import { useFirestore } from "../hooks/useFirestore";
 
 export const action = async ({ request }) => {
   let formData = await request.formData();
@@ -18,7 +20,12 @@ export const action = async ({ request }) => {
 
 function Home() {
   const { user } = useSelector((state) => state.user);
-  const { data: todos } = useCollection("todos", ["uid", "==", user.uid]);
+  const { addNewDoc } = useFirestore();
+  const { data: todos } = useCollection(
+    "todos",
+    ["uid", "==", user.uid],
+    ["createdAt"]
+  );
   const userData = useActionData();
 
   useEffect(() => {
@@ -27,9 +34,7 @@ function Home() {
         ...userData,
         uid: user.uid,
       };
-      addDoc(collection(db, "todos"), newDoc).then(() => {
-        toast.success("Successfully Added");
-      });
+      addNewDoc(newDoc);
     }
   }, [userData]);
 

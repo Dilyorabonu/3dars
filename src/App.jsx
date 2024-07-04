@@ -4,7 +4,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-import { Home, Login, Register, About, Contact } from "./pages";
+import { Home, Login, Register } from "./pages";
 
 // layout
 import MainLayout from "./layouts/MainLayout";
@@ -42,14 +42,6 @@ function App() {
           element: <Home />,
           action: HomeAction,
         },
-        // {
-        //   path: "/about",
-        //   element: <About />,
-        // },
-        // {
-        //   path: "/contact",
-        //   element: <Contact />,
-        // },
       ],
     },
     {
