@@ -12,6 +12,7 @@ function FormCreate({ user }) {
     if (userData) {
       const newDoc = {
         ...userData,
+        completed: userData.completed == "on" ? true : false,
         uid: user.uid,
       };
       addNewDoc(newDoc);

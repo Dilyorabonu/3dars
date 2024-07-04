@@ -4,6 +4,7 @@ import {
   serverTimestamp,
   deleteDoc,
   doc,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import toast from "react-hot-toast";
@@ -22,6 +23,16 @@ export const useFirestore = () => {
     });
     toast.success("New doc Added");
   };
+  //change
+  const changeStatus = async (id, status) => {
+    const selectedDoc = doc(db, "todos", id);
 
-  return { deleteDocument, addNewDoc };
+    await updateDoc(selectedDoc, {
+      completed: !status,
+    });
+
+    toast.success("Status changed");
+  };
+
+  return { deleteDocument, addNewDoc, changeStatus };
 };

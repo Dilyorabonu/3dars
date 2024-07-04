@@ -4,6 +4,7 @@ const initialState = {
   todos: [],
   completed: 0,
   unCompleted: 0,
+  selectedTodo: null,
 };
 
 const todoSlice = createSlice({
@@ -14,9 +15,17 @@ const todoSlice = createSlice({
     removeTodo: () => {},
     changeTodoStatus: () => {},
     calculateTotal: () => {},
+    setSelectedTodo: (state, { payload }) => {
+      state.selectedTodo = payload;
+    },
   },
 });
 
-export const { addTodo, removeTodo, changeTodoStatus, calculateTotal } =
-  todoSlice.actions;
+export const {
+  addTodo,
+  removeTodo,
+  changeTodoStatus,
+  calculateTotal,
+  setSelectedTodo,
+} = todoSlice.actions;
 export default todoSlice.reducer;

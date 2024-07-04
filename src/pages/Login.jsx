@@ -51,13 +51,16 @@ function Login() {
 
   useEffect(() => {
     if (userData) {
-      const state = userData?.email.trim() && userData.password?.trim();
-      if (state) {
-        signInWithEmail(userData.email, userData.password);
-      }
-
-      if (setForgetPassword && !state) {
-        toast.error("Please, enter all of them!");
+      if (forgetPassword) {
+        if (
+          userData?.email.trim() &&
+          userData.password?.trim() &&
+          setErrorStatus
+        ) {
+          signInWithEmail(userData.email, userData.password);
+        } else {
+          toast.error("Please, enter all of them!");
+        }
       }
 
       if (!userData.email.trim()) {
