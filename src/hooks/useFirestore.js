@@ -8,6 +8,8 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import toast from "react-hot-toast";
+import { isPending } from "@reduxjs/toolkit";
+import { useState } from "react";
 
 export const useFirestore = () => {
   //delete
@@ -34,5 +36,20 @@ export const useFirestore = () => {
     toast.success("Status changed");
   };
 
-  return { deleteDocument, addNewDoc, changeStatus };
+  const [isPending, setIsPending] = useState(false);
+
+  const changeTitle = async (id, newTitle) => {
+    setIsPending(true);
+
+    const selectedDoc = doc(db, "todos", id);
+
+    await updateDoc(selectedDoc, {
+      title: newTitle,
+    });
+    setIsPending(false);
+
+    toast.success("Title changed");
+  };
+
+  return { deleteDocument, addNewDoc, changeStatus, changeTitle, isPending };
 };
