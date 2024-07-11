@@ -19,12 +19,14 @@ function Home() {
     ["createdAt"]
   );
   return (
-    <div className="site-container">
-      <div className="grid grid-cols-2">
+    <div className="site-container px-4 md:px-6 lg:px-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="pt-10">
           <FormCreate user={user} />
         </div>
-        {todos && <TodoList todos={todos} />}
+        <div className="overflow-y-auto max-h-[calc(100vh-10rem)] w-full">
+          {todos && <TodoList todos={todos} />}
+        </div>
       </div>
     </div>
   );

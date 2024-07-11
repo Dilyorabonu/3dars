@@ -8,6 +8,7 @@ import {
 } from "firebase/firestore";
 
 import { db } from "../firebase/firebaseConfig";
+
 export const useCollection = (collectionName, whereOptions, orderOptions) => {
   const [data, setData] = useState(null);
 

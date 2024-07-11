@@ -1,4 +1,4 @@
-//icons
+// Import necessary icons from react-icons
 import {
   IoMdSunny,
   IoMdMoon,
@@ -6,19 +6,20 @@ import {
   IoMdNotifications,
 } from "react-icons/io";
 
+// Import required modules from react-router-dom and other libraries
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import { NavLinks } from "../components";
 
-//firebase
+// Import Firebase and Redux modules
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
-
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../app/userSlice";
 
+// Function to get the current theme from localStorage
 function themeLocalStorage() {
   return localStorage.getItem("theme") || "winter";
 }
@@ -27,6 +28,7 @@ function Navbar() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
 
+  // Function to handle user logout
   const logOut = async () => {
     try {
       await signOut(auth);
@@ -36,20 +38,25 @@ function Navbar() {
       toast.error(error.message);
     }
   };
+
   const [theme, setTheme] = useState(themeLocalStorage);
 
+  // Function to toggle the theme
   const handleTheme = () => {
-    const newTheme = theme == "winter" ? "dracula" : "winter";
+    const newTheme = theme === "winter" ? "dracula" : "winter";
     setTheme(newTheme);
   };
 
+  // Use effect to set the theme in the document and localStorage
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem("theme", theme);
   }, [theme]);
+
   return (
-    <div className="navbar bg-base-100">
-      <div className="navbar-start">
+    <div className="navbar bg-base-100 p-4 md:p-6 lg:p-8">
+      {/* Navbar start section */}
+      <div className="navbar-start flex items-center">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
             <svg
@@ -74,55 +81,42 @@ function Navbar() {
             <NavLinks />
           </ul>
         </div>
-      </div>
-      <div className="navbar-center">
-        <Link to="/" className="btn btn-ghost text-xl">
-          Website
+        <Link to="/" className="btn btn-ghost text-xl md:text-2xl lg:text-3xl">
+          Todos Website
         </Link>
       </div>
-      <div className="navbar-end">
-        <button className="btn btn-ghost btn-circle">
-          {/* search icon */}
-          <IoMdSearch className="fill-current w-6 h-6" />
-        </button>
-        <button className="btn btn-ghost btn-circle">
-          <div className="indicator">
-            <IoMdNotifications className="fill-current w-6 h-6" />
-            <span className="badge badge-xs badge-secondary indicator-item"></span>
-          </div>
-        </button>
+      {/* Navbar end section */}
+      <div className="navbar-end flex items-center">
         <button className="btn btn-ghost btn-circle">
           <label className="swap swap-rotate">
-            {/* this hidden checkbox controls the state */}
             <input
               onClick={handleTheme}
               type="checkbox"
-              checked={theme == "dracula"}
+              checked={theme === "dracula"}
               readOnly
             />
-
-            {/* sun icon */}
             <IoMdSunny className="swap-on fill-current w-6 h-6" />
-
-            {/* moon icon */}
             <IoMdMoon className="swap-off fill-current w-6 h-6" />
           </label>
         </button>
         <div className="flex items-center gap-4">
-          <p className="">{user.displayName}</p>
+          <p className="text-sm md:text-base lg:text-lg">{user.displayName}</p>
           <div className="avatar">
-            <div className="w-12 rounded-full ring ring-secondary ring-offset-base-100 ring-offset-2">
+            <div className="w-8 md:w-10 lg:w-12 rounded-full ring ring-secondary ring-offset-base-100 ring-offset-2">
               <img
                 src={
                   user.photoURL
                     ? user.photoURL
-                    : `https://api.dicebar.com/9.x/initials/svg?seed=${user.displayName}`
+                    : `https://api.dicebear.com/9.x/initials/svg?seed=${user.displayName}`
                 }
                 alt=""
               />
             </div>
           </div>
-          <button onClick={logOut} className="btn btn-secondary">
+          <button
+            onClick={logOut}
+            className="btn btn-secondary text-sm md:text-base lg:text-lg"
+          >
             Log out
           </button>
         </div>
